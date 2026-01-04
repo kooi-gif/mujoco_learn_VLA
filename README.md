@@ -6,7 +6,8 @@
 #搭建openvla所需要的虚拟环境：
 
 #根据官方的步骤走：（常常最后一步pip install "flash-attn==2.5.5" --no-build-isolation 会有报错，原因是pyproject.toml中的一些库需要自己修改）：下列为官方的流程
-"
+
+
 conda create -n openvla python=3.10 -y
 conda activate openvla
 
@@ -21,18 +22,23 @@ pip install -e .
 pip install packaging ninja
 ninja --version; echo $?  # Verify Ninja --> should return exit code "0"
 pip install "flash-attn==2.5.5" --no-build-isolation
-"
+
+
 #现在安装正确流程（openvla和openvla-oft环境都可以通用，一个模型训练前后）的：
-"
+
 git clone https://github.com/moojink/openvla-oft.git 
 cd openvla-oft
 修改pyproject.toml中的 
+
 "transformers @git+https://github.com/moojink/openvla-oft.git@v4.40.1openvla-oft"
 "diffusers==0.29.2"
 
 修改libero_requirements.txt中的
+
 "numpy==1.26.4"
+
 #修改保存之后即可进行下一步
+
 conda create -y -n openvla_x python=3.10
 conda activate openvla_x
 
@@ -43,27 +49,31 @@ pip install packaging ninja
 pip install flash-attn==2.5.5 --no-build-isolation
 
 git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git
+
 这里官方libero安装版本有点老"
+
 conda create -n libero python=3.8.13
 conda activate libero
 git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git
 cd LIBERO
 pip install -r requirements.txt
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
-"
+
+
 所以进行修改！！！
-"
+
+
 git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git
 cd LIBERO
 前面安装完了 这步省略
 <!-- pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 \
     --index-url https://download.pytorch.org/whl/cu121 -->
 pip install -r requirements.txt
-"
+
 基本的复现环境就搭建好了，如果还需要mujoco和robosuite库
 直接
 pip install mujoco robotsuite
-"
+
 #
 
 2、
@@ -79,10 +89,10 @@ https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial
 https://huggingface.co/openvla/openvla-7b-finetuned-libero-object
 https://huggingface.co/openvla/openvla-7b-finetuned-libero-goal
 https://huggingface.co/openvla/openvla-7b-finetuned-libero-10
-"
+
 这些是我个人已经能正常运行的文件目录
 ![alt text](libero_1.png)
-"
+
 先进行数据的转化:
 python regenerate_libero_dataset.py \
             --libero_task_suite libero_10 \
@@ -105,7 +115,7 @@ task_suite_name       要对应pretrained_checkpoint哪个任务下的模型
 
 然后就会有输出结果了
 个人的一小节
-"
+
 ![alt text](libero_test1.png)
 ![alt text](libero_test2.png)
 
@@ -121,7 +131,8 @@ task_suite_name       要对应pretrained_checkpoint哪个任务下的模型
 <video controls src="2025_12_18-20_38_26--episode=18--success=True--task=pick_up_the_black_bowl_between_the_plate_and_the_r.mp4" title="Title"></video> 
 
 <video controls src="2025_12_18-20_38_26--episode=19--success=True--task=pick_up_the_black_bowl_between_the_plate_and_the_r.mp4" title="Title"></video>
-"
+
+
 
 #
 
