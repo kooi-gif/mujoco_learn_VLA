@@ -1,11 +1,11 @@
-#####这里是个人项目Openvla针对Libero仿真的复现过程，只记录重要节点及流程。
-#####
+#这里是个人项目Openvla针对Libero仿真的复现过程，只记录重要节点及流程。
+#
 
 1、
 
-#####搭建openvla所需要的虚拟环境：
+#搭建openvla所需要的虚拟环境：
 
-#####根据官方的步骤走：（常常最后一步pip install "flash-attn==2.5.5" --no-build-isolation 会有报错，原因是pyproject.toml中的一些库需要自己修改）：下列为官方的流程
+#根据官方的步骤走：（常常最后一步pip install "flash-attn==2.5.5" --no-build-isolation 会有报错，原因是pyproject.toml中的一些库需要自己修改）：下列为官方的流程
 "
 conda create -n openvla python=3.10 -y
 conda activate openvla
@@ -22,7 +22,7 @@ pip install packaging ninja
 ninja --version; echo $?  # Verify Ninja --> should return exit code "0"
 pip install "flash-attn==2.5.5" --no-build-isolation
 "
-#####现在安装正确流程（openvla和openvla-oft环境都可以通用，一个模型训练前后）的：
+#现在安装正确流程（openvla和openvla-oft环境都可以通用，一个模型训练前后）的：
 "
 git clone https://github.com/moojink/openvla-oft.git
 cd openvla-oft
@@ -32,7 +32,7 @@ cd openvla-oft
 
 修改libero_requirements.txt中的
 "numpy==1.26.4"
-#####修改保存之后即可进行下一步
+#修改保存之后即可进行下一步
 conda create -y -n openvla_x python=3.10
 conda activate openvla_x
 
@@ -64,13 +64,13 @@ pip install -r requirements.txt
 直接
 pip install mujoco robotsuite
 "
-#####
+#
 
 2、
 
-##### LIBERO 测试
-##### 数据准备
-##### 首先官方测试在 ../openvla/experiments/robot/libero/下
+# LIBERO 测试
+# 数据准备
+# 首先官方测试在 ../openvla/experiments/robot/libero/下
 需要去下载四个任务下特定训练过后的模型权重 
 注！！！！原始的https://huggingface.co/openvla/openvla-7b 无法用于libero测试
 因为下列四个模型中包含训练过程中产生的对于机械臂运动或模型输出之类的特定数据，原始的在BridgeData上没有这些
@@ -97,7 +97,7 @@ libero_target_dir 代表你的输出文件所在
 本人当时创建环境多已不记得是哪个环境或者步骤来重新生成数据的
 
 ![alt text](regenerate_img1.jpg)
-##### 运行LIBERO测评
+# 运行LIBERO测评
 python experiments/robot/libero/run_libero_eval.py \--model_family openvla \--pretrained_checkpoint /home/lenovo/xxk/models/openvla-7b-finetuned-libero-spatial/ \--task_suite_name libero_spatial \--center_crop True
 
 pretrained_checkpoint 即你下载的对应的四个任务下特定训练过后的模型权重的路劲
@@ -120,11 +120,11 @@ task_suite_name       要对应pretrained_checkpoint哪个任务下的模型
 <video controls src="2025_12_18-20_38_26--episode=19--success=True--task=pick_up_the_black_bowl_between_the_plate_and_the_r.mp4" title="Title"></video>
 "
 
-#####
+#
 
 3、
 
-##### 将LIBERO数据集转为openvla能微调的finetune.py脚本的RLDS格式的数据集
+# 将LIBERO数据集转为openvla能微调的finetune.py脚本的RLDS格式的数据集
 
 已做完 明天有空更新~
 
